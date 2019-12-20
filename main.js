@@ -11,7 +11,7 @@ let win
 
 var AutoLaunch = require('auto-launch');
 var minecraftAutoLauncher = new AutoLaunch({
-    name: 'clock', //应用名称
+    name: 'my', //应用名称
     path: process.execPath, //应用绝对路径
     isHidden: false, //是否隐藏启动
     mac: {
