@@ -83,12 +83,13 @@ function vmStart() {
                     vm.DateStyle = "width:100%;font-size:13vmin;color:forestgreen;margin:5px";
                 }
 
-                if (now >= Date.parse(changeStatusSD).valueOf() && now <= Date.parse(changeStatusDD).valueOf()) {
+                if (now == Date.parse(changeStatusSD).valueOf() ) {
                     vm.changeStatus(1);
                 }
-                else {
+ 		if (now == Date.parse(changeStatusDD).valueOf() ) {
                     vm.changeStatus(2);
                 }
+               
             },
             "SuccessCount": function () {
                 clearTimeout(uploadSetTimeOut);
