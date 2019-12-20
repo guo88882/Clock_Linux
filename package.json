@@ -1,7 +1,7 @@
 {
   "name": "my-app",
   "productName": "打卡介面",
-  "version": "1.0.57",
+  "version": "1.0.58",
   "main": "main.js",
   "email": "guo88882@gmail.com",
   "author": "GJS <guo88882@gmail.com>",
@@ -27,6 +27,7 @@
   },
   "build": {
     "appId": "com.xxx.app",
+  "productName": "打卡介面",
     "mac": {
       "target": [
         "dmg",
@@ -40,7 +41,7 @@
       ]
     },
     "linux": {
-
+      "artifactName":"${productName}.${ext}",
       "category": "Utility",
       "target": [
         "deb",
