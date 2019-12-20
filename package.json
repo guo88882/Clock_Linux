@@ -14,7 +14,7 @@
     "build": "electron-builder build --win --publish never",
     "deploy": "electron-builder build --win --publish always",
     "deploy_linux_n": "electron-builder build --linux --publish never",
-    "deploy_linux": "electron-builder build --linux --publish always"
+    "deploy_linux": "electron-builder build --linux --armv7l --publish always"
   },
   "repository": {
     "type": "git",
