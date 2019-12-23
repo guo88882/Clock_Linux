@@ -72,7 +72,7 @@ app.on('ready', () => {
     createWindow();
      setInterval(function () { 
 autoUpdater.checkForUpdatesAndNotify();
-},5000);
+},1800000);
 });
 
 // Quit when all windows are closed.
