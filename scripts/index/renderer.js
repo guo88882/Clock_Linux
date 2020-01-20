@@ -76,7 +76,8 @@ function vmStart() {
             FaceCheckCount: 0,
             FaceCheckName: "",
             FaceTopName: "",
-            ViewEmpSn:"",
+            ViewEmpSn: "",
+            CheckGetFaceOne: false,
         },
         computed: {
             newRecordList: function () {
@@ -169,6 +170,7 @@ function vmStart() {
                 vm.GetCompanyGuid();
                 window.setInterval(function () {
                     vm.GetCompanyGuid();
+                    vm.getFace();
                 }, 1800000);
                 ipcRenderer.send('app_version');
                 ipcRenderer.on('app_version', (event, arg) => {
@@ -237,13 +239,25 @@ function vmStart() {
                 //faceapi.draw.drawFaceLandmarks(canvas, fullFaceDescriptions)
             },
             onPlay: async function onPlay() {
-         
+                //const canvas = document.getElementById('canvas')
+                //const myImage = document.getElementById('myImage')
+                // const videoEl = $('#inputVideo').get(0)
+                // const canvas1 = document.getElementById('box')
+
+                //vm.ImageMap = await faceapi
+                //    .detectAllFaces(myImage, new faceapi.TinyFaceDetectorOptions())
+                //    .withFaceLandmarks()
+                //    .withFaceDescriptors()
+
+                //if (!vm.ImageMap.length) {
+                //    return
+                //}
+                //   console.log(vm.ImageMap)
                 const faceMatcher = new faceapi.FaceMatcher(vm.ImageMap)
                 const singleResult = await faceapi
-                    .detectSingleFace(vm.Video, new faceapi.TinyFaceDetectorOptions({ inputSize:160}))
+                    .detectSingleFace(vm.Video, new faceapi.TinyFaceDetectorOptions({ inputSize: 160 }))
                     .withFaceLandmarks(true)
                     .withFaceDescriptor()
-
                 var name;
                 var distance;
                 if (singleResult) {
@@ -262,7 +276,9 @@ function vmStart() {
 
                         const dims = faceapi.matchDimensions(vm.Canvas, vm.Video, true)
 
- 
+                        // faceapi.draw.drawDetections(canvas1, resizedResults)
+                        //faceapi.draw.drawFaceLandmarks(canvas1, resizedResults)
+                        //console.log(resizedResults)
                         const drawOptions = {
                             label: name + '---' + distance
                         }
@@ -278,7 +294,7 @@ function vmStart() {
                         vm.ViewEmpSn = name;
                         //if (vm.FaceCheckName == name) {
                         //    vm.FaceCheckCount++;
-                            
+
                         //    if (vm.FaceCheckCount == 30) {
                         //        vm.addRecordByFace(name);
                         //        vm.FaceCheckCount = 0;
@@ -298,12 +314,10 @@ function vmStart() {
                     setTimeout(() => vm.onPlay())
                 }
                 else {
-console.log('2')
                     const context = vm.Canvas.getContext('2d');
                     context.clearRect(0, 0, vm.Canvas.width, vm.Canvas.height);
                     setTimeout(() => vm.onPlay())
                 }
-
             },
 
 
@@ -317,28 +331,28 @@ console.log('2')
                         var fil = JSON.parse(datas.Data);
                         var temp = [];
                         temp = fil;
-
                         for (var ob of temp) {
-                            var str = JSON.parse(ob);
+                            var str = JSON.parse(ob.param);
                             for (var flo of str) {
                                 var desc = [];
                                 for (var des of flo.descriptors) {
                                     var d = new Float32Array(des)
                                     desc.push(d);
                                 }
-                                vm.ImageMap.push(new faceapi.LabeledFaceDescriptors(flo.label, desc))
+                                vm.ImageMap.push(new faceapi.LabeledFaceDescriptors(flo.label + '---'+ob.emp_name, desc))
                             }
                         }
-window.setTimeout(function () {
-                        vm.onPlay();
-                }, 5000);
-
+                        if (vm.CheckGetFaceOne == false) {
+                            vm.CheckGetFaceOne = true;
+                            window.setTimeout(function () {
+                                vm.onPlay();
+                            }, 5000);
+                        }
                     },
                     error: function (msg) {
 
                     }
                 });
-
                 //const canvas = document.getElementById('canvas')
                 //const canvas1 = document.getElementById('test')
                 //const myImage = document.getElementById('myImage')
@@ -845,7 +859,7 @@ window.setTimeout(function () {
                     alert('¨S¦³guid')
                     return;
                 }
-             
+
                 var ca = emp_sn;
                 var ob = {
                     emp_sn: ca,
