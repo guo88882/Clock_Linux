@@ -70,6 +70,7 @@ function createWindow() {
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
     createWindow();
+autoUpdater.checkForUpdatesAndNotify();
      setInterval(function () { 
 autoUpdater.checkForUpdatesAndNotify();
 },1800000);
