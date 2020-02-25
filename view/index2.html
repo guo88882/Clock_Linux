@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--<script src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"></script>-->
+
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.13"></script>
+    <script src="../scripts/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="../scripts/jquery-1.11.1.min.js"></script>
+    <script src="../scripts/jquery-2.2.1.js"></script>
+    <link rel="stylesheet" href="../Content/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="../Content/Site.css">
+    <script src="../Content/lib/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/jquery-form/form@4.2.2/dist/jquery.form.min.js" integrity="sha384-FzT3vTVGXqf7wRfy8k4BiyzvbNfeYjK+frTVqZeNDFl8woCbF0CYG6g2fMEFFo/i" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="../scripts/index/renderer.js" charset="utf8"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://code.responsivevoice.org/responsivevoice.js"></script>
+    <!--<script src="../scripts/webcam.js"></script>
+    <script src="../scripts/facedetection/camvas.js"></script>
+    <script src="../scripts/facedetection/pico.js"></script>
+    <script src="../scripts/facedetection/index.js"></script>
+    <script src="../scripts/facedetection/html2canvas.js"></script>-->
+    <script src="../node_modules/face-api.js/dist/face-api.js"></script>
+    <link rel="stylesheet" href="../css/style.css">
+
+
+    <title>打卡系統</title>
+</head>
+
+<body>
+	<div id="clock">
+		<div v-show="IsPerson == false" class="screenSaver">
+			<input id="hiddenInput" type="password" autofocus style="position:absolute;top:-9999px" v-model="hiddenInput" />
+			<img src="../img/logo 960X125.png" alt="">
+			<button class="enterBtn" v-on:click="ChangeDiv">進入打卡系統</button>
+		</div>
+		<!-- v-show="IsPerson == true" -->
+		<div id="checkIn" v-show="IsPerson == true" v-loading="fullscreenLoading"  element-loading-background="rgba(0, 0, 0, 0.8)"  element-loading-spinner="el-icon-loading" element-loading-text="等一下啦">        
+				<!-- v-show="IsPerson == true"  -->
+				<input id="cerrier" type="password" autofocus v-model="carrier" v-on:keyup.enter="addRecord()" />
+				<div id="header">
+					<div class="enterID">
+						<label for="keyinEm
+						pSn">輸入工號打卡 : </label>
+						<input type="text" id="keyinEmpSn" name="keyinEmpSn" onkeyup="value=value.replace(/[^\a-\z\A-\Z0-9\ \u4E00-\u9FA5]/g,'')" v-model="keyinEmpSn" v-on:keyup.enter="addRecordByEmpSn();" />
+					</div>
+					<div class="logo">
+						<img src="../img/logo460X65.png" alt="">
+					</div>
+				</div>
+				
+				<div id="main">
+						<div class="colLeft">
+							<div class="time">
+									<div class="dateStyle" :style="DateStyle">{{nowDate}}</div>
+									<div class="clockDateStyle" :style="ClockDateStyle">{{nowTime}}</div>
+							</div>
+							<div class="btnGroup">
+								<button _class="atWork BtnStyle1" round :class="[ClockStatus == 1 ? 'BtnStyle1' : 'BtnStyle2' , 'atWork']" v-on:click="changeStatus(1)">
+                  上班
+                </button>
+                <button _class="offWork BtnStyle2" round :class="[ClockStatus == 2 ? 'BtnStyle1' : 'BtnStyle2' , 'offWork']" v-on:click="changeStatus(2)">
+                 下班
+                </button>
+							</div>
+						</div>
+
+						<div class="colRight">
+							<p class="detectTxt" style="">辨識工號 :{{ViewEmpSn}}  </p>
+							<video id="inputVideo" style="" autoplay muted playsinline></video>
+							<canvas id="box" style=""></canvas>
+						</div>
+				</div>
+            
+				<div id="footer">
+					<p style="">本系統個人資料之蒐集、處理或利用，應尊重當事人之權益，依誠實及信用方法為之，不得逾越特定目的之必要範圍，並應與蒐集之目的具有正當合理之關聯。<p id="version"></p>
+				</div>
+
+
+				<el-dialog class="warnMsg" :title="MsgTitle" :visible.sync="WaitMsg" style="">
+						<el-form>
+								<label style=""><i class="el-icon-warning-outline">請稍後再逼</label>
+						</el-form>
+				</el-dialog>
+
+				<el-dialog class="warnMsg" :title="LengthTitle" :visible.sync="LengthError" style="">
+						<el-form>
+								<label style=""><i class="el-icon-warning-outline">長度錯誤</i></label>
+						</el-form>
+				</el-dialog>
+
+        <el-dialog class="updateMsg" title="更新" :visible.sync="notification" style="">
+            <el-form>
+                <p>{{message}}</p>
+                <button v-show="closeBtn" v-on:click="closeNotification()">
+                    關閉
+                </button>
+                <button v-show="restartBtn" v-on:click="restartApp()">
+                    安裝
+                </button>
+            </el-form>
+        </el-dialog>
+    </div>
+	</div>
+</body>
+</html>

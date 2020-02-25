@@ -39,17 +39,16 @@ function createWindow() {
             nodeIntegration: true
         }
     })
-
     //win.loadURL('file://index.html')
 
     win.loadURL(url.format({
-        pathname: path.join(__dirname, 'view/index.html'),
+        pathname: path.join(__dirname, 'view/index2.html'),
         protocol: 'file:',
         slashes: true
     }))
     win.maximize();
 
-    // Menu.setApplicationMenu(null);
+     //Menu.setApplicationMenu(null);
 
     //pathname: path.join(__dirname, 'index.html'),
     // Open the DevTools.
