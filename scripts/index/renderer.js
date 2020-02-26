@@ -45,7 +45,7 @@ function vmStart() {
             SuccessJobName: "",
             SuccessCount: 0,
             SuccessNowDate: "",
-            MsgTitle: "打卡狀態",
+            MsgTitle: "æå¡çæ",
             nowPic: "",
             nowDate: null,
             nowTime: null,
@@ -70,7 +70,7 @@ function vmStart() {
             message: "",
             closeBtn: false,
             restartBtn: false,
-            LengthTitle: "錯誤",
+            LengthTitle: "é¯èª€",
             LengthError: false,
             ImageMap: null,
             Video: null,
@@ -103,10 +103,10 @@ function vmStart() {
                 }
             },
             "nowTime": function () {
-                var now = new Date();//�ͦ��������(���㪺�����T)
-                var y = now.getFullYear();//�~��
-                var M = vm.changeDateChar(now.getMonth() + 1);//���
-                var d = vm.changeDateChar(now.getDate());//���
+                var now = new Date();//ï¿œÍŠï¿œï¿œï¿œï¿œï¿œï¿œï¿œï¿œ(ï¿œï¿œï¿œãªºï¿œï¿œï¿œï¿œï¿œT)
+                var y = now.getFullYear();//ï¿œ~ï¿œï¿œ
+                var M = vm.changeDateChar(now.getMonth() + 1);//ï¿œï¿œï¿œ
+                var d = vm.changeDateChar(now.getDate());//ï¿œï¿œï¿œ
 
                 var strS = y + '/' + M + '/' + d + " 09:01:00";
                 var strD = y + '/' + M + '/' + d + " 18:00:00";
@@ -219,14 +219,14 @@ function vmStart() {
 
                 ipcRenderer.on('update_available', () => {
                     ipcRenderer.removeAllListeners('update_available');
-                    vm.message = '有更新版本，下載後會自動安裝並重新啟動程式';
+                    vm.message = 'ææŽæ°çæ¬ïŒäžèŒåŸæèªåå®è£äžŠéæ°ååçšåŒ';
                     vm.fullscreenLoading = true
                     vm.notification = true;
                     ipcRenderer.send('restart_app');
                 });
                 ipcRenderer.on('update_downloaded', () => {
                     ipcRenderer.removeAllListeners('update_downloaded');
-                    vm.message = '重新啟動中...';
+                    vm.message = 'éæ°ååäž­...';
                     //vm.restartBtn = true;
                     vm.notification = true;
                     ipcRenderer.send('restart_app');
@@ -251,12 +251,17 @@ function vmStart() {
             openNotification: function () {
                 this.$notify({
                     title: '',
+                  
                     message: ` 
-                    <div id="notification">
-											<p style="${vm.ClockDateStyle}; font-size:3em;">${vm.nowTime}</p>
-											<p style="font-size:1.5rem;color:#595757; margin:20px 0;"> ${vm.RecordList[vm.RecordList.length - 1].SuccessMsgStr}</p>
-											<img style="display:block; width:100%; margin:1vh auto;" : src="${vm.RecordList[vm.RecordList.length - 1].nowPic}" />
-										</div>  
+                    <div id="notification" style="display: flex; align-items: center;">
+                        <div  style="width:49%; margin-right:10px;" >
+					        <img style="width:100%; margin:1vh auto;" : src="${vm.RecordList[vm.RecordList.length - 1].nowPic}" />
+                        </div>
+                        <div >
+                            <p style="${vm.ClockDateStyle} font-size:2em;">${vm.nowTime}</p>
+					        <p style="font-size:28px;color:#595757; margin:20px 0;"> ${vm.RecordList[vm.RecordList.length - 1].SuccessMsgStr}</p>
+                        </div>
+					</div>  
                   	`,
                     //         message: `  <p style='${vm.ClockDateStyle}'>${vm.nowTime}</p><br />
                     //         <div>
@@ -283,7 +288,7 @@ function vmStart() {
                 await faceapi.nets.faceLandmark68Net.loadFromUri('../node_modules/face-api.js/weights')
                 console.log('ok');
                 //this.onPlay();
-                const stream = await navigator.mediaDevices.getUserMedia({ video: {} })
+                const stream = await navigator.mediaDevices.getUserMedia({ video: {width: 765, height: 425} })
                 //const videoEl = $('#inputVideo').get(0)
                 vm.Video.srcObject = stream
                 await vm.getFace();
@@ -351,7 +356,7 @@ function vmStart() {
 
                     distance = bestMatch.distance.toFixed(2);
                     if (parseFloat(distance) <= 0.4) {
-                        const displaySize = { width: vm.Video.videoWidth-100, height: vm.Video.videoHeight-100 }
+                        const displaySize = { width: vm.Video.videoWidth, height: vm.Video.videoHeight }
                         const resizedResults = faceapi.resizeResults(singleResult, displaySize)
 
                         const dims = faceapi.matchDimensions(vm.Canvas, vm.Video, true)
@@ -542,7 +547,7 @@ function vmStart() {
                     success: function (datas) {
                         var ob = JSON.parse(datas.Data);
                         if (ob.Data.Id == null) {
-                            alert('帳號或密碼錯誤')
+                            alert('åž³èæå¯ç¢Œé¯èª€')
                             vm.loginDialog = false;
                             return;
                         }
@@ -565,7 +570,7 @@ function vmStart() {
                             vm.GetCompanyGuid();
                         }
                         else {
-                            alert("無權限");
+                            alert("ç¡æ¬é");
                             vm.loginDialog = false;
                         }
                     },
@@ -638,10 +643,10 @@ function vmStart() {
                 var url = canvas.toDataURL('images/jpeg');
 
                 if (vm.ClockStatus == 1) {
-                    vm.voiceStart(resultOb.emp_name + "早安啦");
-                    vm.SuccessMsgStr = resultOb.emp_name + " : 上班打卡成功";
-                    vm.SuccessEmpSn = "工號 : " + resultOb.emp_sn;
-                    vm.SuccessDepName = "部門 : " + resultOb.dep_name;
+                    vm.voiceStart(resultOb.emp_name + "æ©å®åŠ");
+                    vm.SuccessMsgStr = resultOb.emp_name +  "</p><p style='font-size:21px;color:#595757;text-align:left;'>上班打卡成功";
+                    vm.SuccessEmpSn = "å·¥è : " + resultOb.emp_sn;
+                    vm.SuccessDepName = "éšé : " + resultOb.dep_name;
                     vm.RecordList.push({
                         SuccessMsgStr: vm.SuccessMsgStr,
                         SuccessEmpSn: vm.SuccessEmpSn,
@@ -652,10 +657,10 @@ function vmStart() {
                     vm.openNotification();
                 }
                 else {
-                    vm.voiceStart(resultOb.emp_name + "再見啦");
-                    vm.SuccessMsgStr = resultOb.emp_name + ": 下班打卡成功";
-                    vm.SuccessEmpSn = "工號 : " + resultOb.emp_sn;
-                    vm.SuccessDepName = "部門 : " + resultOb.dep_name;
+                    vm.voiceStart(resultOb.emp_name + "åèŠåŠ");
+                    vm.SuccessMsgStr = resultOb.emp_name +  "</p><p style='font-size:21px;color:#595757;text-align:left;'>下班打卡成功";
+                    vm.SuccessEmpSn = "å·¥è : " + resultOb.emp_sn;
+                    vm.SuccessDepName = "éšé : " + resultOb.dep_name;
                     vm.RecordList.push({
                         SuccessMsgStr: vm.SuccessMsgStr,
                         SuccessEmpSn: vm.SuccessEmpSn,
@@ -762,21 +767,21 @@ function vmStart() {
                         $("#cerrier").focus();
                         vm.keyinEmpSn = "";
                     }
-                }) // ÂIÀ»€§«áŠL¥X
+                }) // ÃIÃÂ»â¬Â§Â«Ã¡Å LÂ¥X
                 element.addEventListener('keyup', function (event) {
                     console.log(event)
-                    // ±×œu/
+                    // Â±ÃÅu/
                     if (event.keyCode == 111) {
                         vm.changeStatus(1);
                         vm.carrier = "";
                     }
-                    // *ž¹
+                    // *ÅŸÂ¹
                     if (event.keyCode == 106) {
                         vm.changeStatus(2);
                         vm.carrier = "";
                     }
 
- 		    // +ž¹
+ 		    // +ÅŸÂ¹
                     if (event.keyCode == 107) {
                         if (vm.keyinEmpSn == "") {
                             vm.carrier = "";
@@ -807,19 +812,19 @@ function vmStart() {
                     //    }
                     //}
 
-                    //Input€ºŽîž¹-
+                    //Inputâ¬ÂºÅœÃ®ÅŸÂ¹-
                     if (event.code == 'NumpadSubtract' && event.keyCode == 109) {
                         $("#cerrier").focus();
                         vm.keyinEmpSn = "";
                     }
-                    //Input€º/
+                    //Inputâ¬Âº/
                     if (event.code == 'NumpadDivide' && event.keyCode == 111 && event.path.length == 9) {
                         $("#cerrier").focus();
                         vm.keyinEmpSn = "";
                         vm.changeStatus(1);
                      //   $("#keyinEmpSn").focus();
                     }
-                    //Input€º*
+                    //Inputâ¬Âº*
                     if (event.code == 'NumpadMultiply' && event.keyCode == 106 && event.path.length == 9) {
                         $("#cerrier").focus();
                         vm.keyinEmpSn = "";
@@ -843,13 +848,13 @@ function vmStart() {
                     }
                 });
                 dateSetTimeOut = window.setInterval(function () {
-                    var now = new Date();//�ͦ��������(���㪺�����T)
-                    var y = now.getFullYear();//�~��
-                    var M = vm.changeDateChar(now.getMonth() + 1);//���
-                    var d = vm.changeDateChar(now.getDate());//���
-                    var h = vm.changeDateChar(now.getHours());//�p��
-                    var m = vm.changeDateChar(now.getMinutes());//����
-                    var s = vm.changeDateChar(now.getSeconds());//����
+                    var now = new Date();//ï¿œÍŠï¿œï¿œï¿œï¿œï¿œï¿œï¿œï¿œ(ï¿œï¿œï¿œãªºï¿œï¿œï¿œï¿œï¿œT)
+                    var y = now.getFullYear();//ï¿œ~ï¿œï¿œ
+                    var M = vm.changeDateChar(now.getMonth() + 1);//ï¿œï¿œï¿œ
+                    var d = vm.changeDateChar(now.getDate());//ï¿œï¿œï¿œ
+                    var h = vm.changeDateChar(now.getHours());//ï¿œpï¿œï¿œ
+                    var m = vm.changeDateChar(now.getMinutes());//ï¿œï¿œï¿œï¿œ
+                    var s = vm.changeDateChar(now.getSeconds());//ï¿œï¿œï¿œï¿œ
                     vm.nowDate = y + '/' + M + '/' + d;
                     vm.nowTime = h + ':' + m + ':' + s;
                 }, 1000);
@@ -870,17 +875,17 @@ function vmStart() {
             },
 
             addRecord: function () {
-                console.log('Ū�dENTER')
-                console.log('ENTERĲ�o');
+                console.log('Åªï¿œdENTER')
+                console.log('ENTERÄ²ï¿œo');
                 if (vm.Guid == "") {
-                    alert('沒有guid')
+                    alert('æ²æguid')
                     return;
                 }
                 //vm.InputDis = true;
                 if (vm.carrier.length != 10) {
                     //  vm.InputDis = false;
                     vm.carrier = "";
-                    console.log('10碼')
+                    console.log('10ç¢Œ')
                     return;
                 }
                 var ca = vm.carrier;
@@ -893,7 +898,7 @@ function vmStart() {
                     token: vm.Guid
                 };
                 if (vm.Ing == true) {
-                    console.log('執行中')
+                    console.log('å·è¡äž­')
                     vm.WaitMsg = true;
                     vm.WaitMsgCount = vm.WaitMsgCount + 1;
                     return;
@@ -924,7 +929,7 @@ function vmStart() {
                         clearTimeout(setTimeOut);
                         var result = datas.Data;
                         console.log('Record Return')
-                        if (result.emp_name != "無登記") {
+                        if (result.emp_name != "ç¡ç»èš") {
                             console.log(vm.count)
                             vm.takePicture(ob, result);
                         }
@@ -938,10 +943,10 @@ function vmStart() {
                 });
             },
             addRecordByEmpSn: function () {
-                console.log('工號ENTER')
-                console.log('ENTERĲ�o');
+                console.log('å·¥èENTER')
+                console.log('ENTERÄ²ï¿œo');
                 if (vm.Guid == "") {
-                    alert('沒有guid')
+                    alert('æ²æguid')
                     return;
                 }
                 var snTitle = "";
@@ -953,7 +958,7 @@ function vmStart() {
                     snTitle = "KN";
                 }
                 else {
-                    alert('開頭錯誤(7=ST,9=KN)')
+                    alert('éé ­é¯èª€(7=ST,9=KN)')
                     vm.keyinEmpSn = "";
                     return;
                 }
@@ -1005,7 +1010,7 @@ function vmStart() {
                         vm.nowPic = "";
                         clearTimeout(setTimeOut);
                         var result = datas.Data;
-                        if (result.emp_name != "無登記") {
+                        if (result.emp_name != "ç¡ç»èš") {
                             console.log(vm.count)
                             vm.takePicture(ob, result);
                         }
@@ -1022,12 +1027,12 @@ function vmStart() {
 
             addRecordByFace: function (emp_sn) {
                 if (vm.FaceTopName == emp_sn) {
-                    console.log('重複');
+                    console.log('éè€');
                     return;
                 }
                 console.log('Face ENTER')
                 if (vm.Guid == "") {
-                    alert('沒有guid')
+                    alert('æ²æguid')
                     return;
                 }
 
@@ -1066,7 +1071,7 @@ function vmStart() {
                         vm.nowPic = "";
                         clearTimeout(setTimeOut);
                         var result = datas.Data;
-                        if (result.emp_name != "無登記") {
+                        if (result.emp_name != "ç¡ç»èš") {
                             console.log(vm.count)
                             vm.takePicture(ob, result);
                         }
@@ -1114,7 +1119,7 @@ function vmStart() {
                 }
                 if (type == "Error") {
                     $("#cerrier").focus();
-                    vm.SuccessMsgStr = "失敗";
+                    vm.SuccessMsgStr = "å€±æ";
                     vm.carrier = "";
                     vm.SuccessEmpSn = "";
                     vm.SuccessDepName = "";
