@@ -47,7 +47,7 @@ function createWindow() {
         slashes: true
     }))
     win.maximize();
-
+    win.setSimpleFullScreen(true);
      //Menu.setApplicationMenu(null);
 
     //pathname: path.join(__dirname, 'index.html'),
