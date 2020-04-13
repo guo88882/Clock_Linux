@@ -28,12 +28,15 @@
   "build": {
     "appId": "com.xxx.app",
     "productName": "打卡介面",
-    "mac": {
-      "target": [
-        "dmg",
-        "zip"
-      ]
-    },
+    "publish": [
+      {
+        "provider": "generic",
+        "owner": "guo88882",
+        "repo": "HR_Clock_Linux",
+        "releaseType": "release",
+        "url": "https://m.kingnet.net.tw/ClockDownloadFile_Linux/"
+      }
+    ],
     "win": {
       "target": [
         "nsis",
